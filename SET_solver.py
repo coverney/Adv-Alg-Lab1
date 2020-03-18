@@ -182,21 +182,41 @@ class Card:
         return hash(tuple(self.values))
 
 def time_varying_n(n, deck, iters=1000):
+    '''
+    Takes in a deck and n value and then times the operation of creating a hand
+    and finding a set in the hand using the optimum pair checking algorithm.
+    Used to generate figure when varying n.
+    '''
     t = timeit.Timer('hand = deck.deal(n); hand.find_set()',
             globals=locals())
     return t.timeit(iters)
 
 def time_varying_p(deck, iters=500):
+    '''
+    Takes in a deck and then times the operation of creating a hand
+    and finding a set in the hand using the optimum pair checking algorithm
+    Used to generate figure when varying p.
+    '''
     t = timeit.Timer('hand = deck.deal(); hand.find_set()',
             globals=locals())
     return t.timeit(iters)
 
 def time_varying_n_bf(n, deck, iters=1000):
+    '''
+    Takes in a deck and then times the operation of creating a hand
+    and finding a set in the hand using brute force.
+    Used to generate figure when varying n.
+    '''
     t = timeit.Timer('hand = deck.deal(n); hand.find_set_brute_force()',
             globals=locals())
     return t.timeit(iters)
 
 def time_varying_p_bf(deck, iters=500):
+    '''
+    Takes in a deck and then times the operation of creating a hand
+    and finding a set in the hand using brute force.
+    Used to generate figure when varying p.
+    '''
     t = timeit.Timer('hand = deck.deal(); hand.find_set_brute_force()',
             globals=locals())
     return t.timeit(iters)
@@ -207,33 +227,32 @@ def apply_params(x, a, b, c):
 if __name__ == '__main__':
     # TIMING: Time how long if takes to find sets for different values of n and p
     # Generate figures to compare brute force with optimum pair checking
-    # xs = []
-    # y1s = []
-    # y2s = []
-    # for i in range(8, 82):
-    #     deck = Deck()
-    #     xs.append(i)
-    #     y1s.append(time_varying_n(i, deck))
-    #     y2s.append(time_varying_n_bf(i, deck))
-    #     print('Vary n:', i)
-    #
-    # z1 = np.polyfit(xs, y1s, 2)
-    # z2 = np.polyfit(xs, y2s, 2)
-    # p1 = np.poly1d(z1)
-    # p2 = np.poly1d(z2)
-    # plt.plot(xs, p1(xs), color='C0', linestyle=':')
-    # plt.plot(xs, p2(xs), color='C1', linestyle=':')
-    # plt.plot(xs, y1s, label='Optimum Pair Checking')
-    # plt.plot(xs, y2s, label='Brute Force')
-    # plt.rc('xtick',labelsize=20)
-    # plt.rc('ytick',labelsize=20)
-    # plt.xlabel('Number of cards dealt', fontsize=15, labelpad=10)
-    # plt.ylabel('Time (s)', fontsize=15, labelpad=10)
-    # plt.legend(fontsize=15)
+    xs = []
+    y1s = []
+    y2s = []
+    for i in range(8, 82):
+        deck = Deck()
+        xs.append(i)
+        y1s.append(time_varying_n(i, deck))
+        y2s.append(time_varying_n_bf(i, deck))
+        print('Vary n:', i)
+    z1 = np.polyfit(xs, y1s, 2)
+    z2 = np.polyfit(xs, y2s, 2)
+    p1 = np.poly1d(z1)
+    p2 = np.poly1d(z2)
+    plt.plot(xs, p1(xs), color='C0', linestyle=':')
+    plt.plot(xs, p2(xs), color='C1', linestyle=':')
+    plt.plot(xs, y1s, label='Optimum Pair Checking')
+    plt.plot(xs, y2s, label='Brute Force')
+    plt.rc('xtick',labelsize=20)
+    plt.rc('ytick',labelsize=20)
+    plt.xlabel('Number of cards dealt', fontsize=15, labelpad=10)
+    plt.ylabel('Time (s)', fontsize=15, labelpad=10)
+    plt.legend(fontsize=15)
     # plt.savefig("time_varying_n2.png", transparent=True, bbox_inches='tight')
-    # plt.clf()
+    plt.clf()
 
-    start = time.time()
+    # start = time.time()
     xs = []
     y1s = []
     y2s = []
@@ -258,10 +277,9 @@ if __name__ == '__main__':
     plt.rc('ytick',labelsize=20)
     plt.xlabel('Number of properties', fontsize=15, labelpad=10)
     plt.ylabel('Time (s)', fontsize=15, labelpad=10)
-    plt.savefig("time_varying_p3.png", transparent=True, bbox_inches='tight')
-
-    end = time.time()
-    print('Time elapsed:', end - start)
+    # plt.savefig("time_varying_p3.png", transparent=True, bbox_inches='tight')
+    # end = time.time()
+    # print('Time elapsed:', end - start)
 
     # TESTING: create a deck and hand and then try to find a set in the hand
     # deck = Deck()
@@ -269,9 +287,3 @@ if __name__ == '__main__':
     # hand = deck.deal()
     # print(hand)
     # print(hand.find_set())
-
-    # card_vals = input(">")
-    # values = card_vals.split(' ')[:4]
-    # c = Card([int(v) for v in values])
-    # print(c)
-    # print(hand.find_card(c))
