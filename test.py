@@ -86,7 +86,10 @@ def test_1000_valid_SETs():
         set1 = hand.find_set()
         set2 = hand.find_set_brute_force()
         if set1 and set2:
+            # sets found may be different, but they should both be valid
             assert is_valid_SET(set1) == True
             assert is_valid_SET(set2) == True
         else:
+            # if no SET was found by either algorithm, assert that the other
+            # algorithm was also unable to find any SET.
             assert set1 == set2
